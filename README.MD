@@ -24,5 +24,5 @@ $ pytest
 
 ### Production
 ```
-$ gunicorn -w 4 -k flask_sockets.worker server:app
+$ gunicorn -w 4 -k flask_sockets.worker wsgi:app
 ```

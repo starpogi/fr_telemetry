@@ -5,7 +5,7 @@ mysql -u root -e "CREATE DATABASE IF NOT EXISTS fr"
 
 echo "Env Setting"
 export SECRET_KEY="123Secret"
-export FLASK_APP=server
+export FLASK_APP=wsgi.py
 export DEBUG=True
 export CONFIG=configs.development.Dev
 

@@ -1,37 +1,31 @@
 import os
 
 from flask import Flask
-from flask_sockets import Sockets
 from flask_alembic import Alembic
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
+from server.tools import data_generator
 
-app = Flask(__name__)
-app.config.from_object(os.environ['CONFIG'])
-websocket = Sockets(app)
-alembic = Alembic(app)
-db = SQLAlchemy(app)
+alembic = Alembic()
+db = SQLAlchemy()
+ma = Marshmallow()
 
+def create_app(config=None):
+    config = config or os.environ['CONFIG']
 
-from server.models.events import LocationEvent
+    app = Flask(__name__)
 
+    app.config.from_object(config)
+    alembic.init_app(app)
+    db.init_app(app)
+    ma.init_app(app)
 
-@websocket.route('/echo')
-def echo_socket(ws):
-    while not ws.closed:
-        message = ws.receive()
-        ws.send(message)
+    from server import views
+    from server import models
 
+    app.register_blueprint(views.api.blueprint)
 
-@app.route('/')
-def index():
-    return "Hi"
+    app.cli.add_command(data_generator.cli, "tools")
 
-
-if __name__ == '__main__':
-    from gevent import pywsgi
-    from geventwebsocket.handler import WebSocketHandler
-    server = pywsgi.WSGIServer(('', 5000),
-                               app,
-                               handler_class=WebSocketHandler)
-    server.serve_forever()
+    return app
