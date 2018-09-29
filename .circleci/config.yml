@@ -8,6 +8,11 @@ jobs:
     docker:
       - image: circleci/python:3.7.0
       - image: circleci/mysql:8.0.12
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: circle_test
+
     environment:
       CONFIG: configs.test.Test
       SECRET_KEY: 123ABC
@@ -32,6 +37,11 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements
+
+      - run:
+          name: Wait for DB
+          # preinstalled in circleci/* docker image
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
 
       - save_cache:
           paths:
