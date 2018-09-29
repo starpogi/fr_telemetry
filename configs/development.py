@@ -1,6 +1,8 @@
 class Dev:
-    pass
+    SQLALCHEMY_DATABASE_URI = "mysql://root:@localhost/fr"
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class Test:
-    pass
+    SQLALCHEMY_DATABASE_URI = "mysql://root:@localhost/fr"
+    SQLALCHEMY_TRACK_MODIFICATIONS = True

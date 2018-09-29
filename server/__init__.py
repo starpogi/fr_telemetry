@@ -1,11 +1,19 @@
+import os
+
 from flask import Flask
 from flask_sockets import Sockets
 from flask_alembic import Alembic
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
+app.config.from_object(os.environ['CONFIG'])
 websocket = Sockets(app)
 alembic = Alembic(app)
+db = SQLAlchemy(app)
+
+
+from server.models.events import LocationEvent
 
 
 @websocket.route('/echo')
