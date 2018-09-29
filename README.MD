@@ -19,7 +19,7 @@ $ flask run
 
 ### Test
 ```
-$ nosetests
+$ pytest
 ```
 
 ### Production
