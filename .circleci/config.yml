@@ -13,8 +13,8 @@ jobs:
       SECRET_KEY: 123ABC
       FLASK_APP: server
       DEBUG: True
-      
-    working_directory: ~/
+
+    working_directory: ~/project
 
     steps:
       - checkout
