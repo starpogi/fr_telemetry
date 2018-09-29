@@ -38,6 +38,9 @@ jobs:
           command: |
             . venv/bin/activate
             export CONFIG=configs.test.Test
+            export SECRET_KEY="123Secret"
+            export FLASK_APP=server
+            export DEBUG=True
             flask db upgrade
             pytest --junitxml=test-reports/junit.xml
 
