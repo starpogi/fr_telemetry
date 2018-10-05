@@ -15,7 +15,7 @@ jobs:
 
     environment:
       CONFIG: configs.test.LocalTest
-      CIRCLECI_CONFIG: configs.test.LocalTest
+      CIRCLECI_CONFIG: configs.test.CircleCITest
       SECRET_KEY: 123ABC
       FLASK_APP: server
       DEBUG: True
