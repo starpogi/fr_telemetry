@@ -14,7 +14,8 @@ jobs:
           MYSQL_DATABASE: circle_test
 
     environment:
-      CONFIG: configs.test.Test
+      CONFIG: configs.test.LocalTest
+      CIRCLECI_CONFIG: configs.test.LocalTest
       SECRET_KEY: 123ABC
       FLASK_APP: server
       DEBUG: True

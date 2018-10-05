@@ -65,15 +65,17 @@ def gen_robot_name(i):
     return ROBOT_NAMES[i%len(ROBOT_NAMES)] + " " + ROBOT_NAMES[i%len(ROBOT_NAMES)]
 
 
-def gen_robot(num):
+def gen_robot(name=None):
+    return {
+        "x": random.random() * 100,
+        "y": random.random() * 100,
+        "timestamp": i,
+        "robot": name or gen_robot_name(i)
+    }
+
+def gen_robots(num):
     for i in range(num):
-        robot = {
-            "x": random.random() * 100,
-            "y": random.random() * 100,
-            "timestamp": i,
-            "robot": gen_robot_name(i)
-        }
-        yield robot
+        yield gen_robot()
 
 
 @cli.command()

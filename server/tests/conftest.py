@@ -1,10 +1,14 @@
 import pytest
+import os
+
 from server import create_app
+from server import db
 
 
 @pytest.fixture(scope="module")
 def test_client():
-    app = create_app(config='configs.test.Test')
+    config = os.environ.get('CIRCLECI_CONFIG', 'configs.test.LocalTest')
+    app = create_app(config=config)
     testing_client = app.test_client()
     ctx = app.app_context()
     ctx.push()
@@ -14,10 +18,11 @@ def test_client():
     ctx.pop()
 
 
-@pytest.fixture(scope="module")
-def init_database():
+@pytest.fixture(scope="function")
+def test_db():
     db.create_all()
 
     yield db
 
+    db.session.rollback()
     db.drop_all()
