@@ -7,6 +7,7 @@ class LocationEvent(db.Model):
     robot = db.Column(db.String(150), index=True, nullable=False)
     x = db.Column(db.Float, nullable=False)
     y = db.Column(db.Float, nullable=False)
+
     timestamp = db.Column(db.Integer, index=True, default=datetime.utcnow,
                           nullable=False)
 
