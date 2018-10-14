@@ -1,21 +1,29 @@
 #!/bin/bash
 
-echo "Database Creation"
-mysql -u root -e "CREATE DATABASE IF NOT EXISTS fr"
+if [ "$1" == "create" ]; then
+  echo "Database Creation"
+  mysql -u root -e "CREATE DATABASE IF NOT EXISTS fr"
 
-echo "Env Setting"
-export SECRET_KEY="123Secret"
-export FLASK_APP=wsgi.py
-export FLASK_ENV=development
-export DEBUG=True
-export CONFIG=configs.development.Dev
-
-echo "Create Env"
-if [ ! -d "env" ]; then
-  virtualenv env --python=python3
+  echo "Create Env"
+  if [ ! -d "env" ]; then
+    virtualenv env --python=python3
+  fi
 fi
 
-source env/bin/activate
 
-echo "Install Requirements"
-pip install -r requirements
+if [ "$1" == "create" ] || [ "$1" == "env" ]; then
+  echo "Env Setting"
+  export SECRET_KEY="123Secret"
+  export FLASK_APP=wsgi.py
+  export FLASK_ENV=development
+  export DEBUG=True
+  export CONFIG=configs.development.Dev
+
+  source env/bin/activate
+fi
+
+
+if [ "$1" == "create" ]; then
+  echo "Install Requirements"
+  pip install -r requirements
+fi

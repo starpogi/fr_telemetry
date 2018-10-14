@@ -1,10 +1,11 @@
-from server import db
 from datetime import datetime
+
+from server import db
 
 
 class Robot(db.Model):
     name = db.Column(db.String(150), primary_key=True)
-    odometer = db.Column(db.Integer, default=0, nullable=False)
+    odometer = db.Column(db.Float, default=0, nullable=False)
     last_x = db.Column(db.Float, default=0.0, nullable=False)
     last_y = db.Column(db.Float, default=0.0, nullable=False)
     last_event_id = db.Column(db.Integer, db.ForeignKey('location_event.id'),

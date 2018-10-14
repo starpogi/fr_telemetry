@@ -1,8 +1,8 @@
 """Initial
 
-Revision ID: 74004a004a4c
+Revision ID: 9c586b57b7e5
 Revises: 
-Create Date: 2018-10-05 22:34:16.337647
+Create Date: 2018-10-12 17:33:20.670490
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '74004a004a4c'
+revision = '9c586b57b7e5'
 down_revision = None
 branch_labels = ('default',)
 depends_on = None
@@ -30,7 +30,7 @@ def upgrade():
     op.create_index(op.f('ix_location_event_timestamp'), 'location_event', ['timestamp'], unique=False)
     op.create_table('robot',
     sa.Column('name', sa.String(length=150), nullable=False),
-    sa.Column('odometer', sa.Integer(), nullable=False),
+    sa.Column('odometer', sa.Float(), nullable=False),
     sa.Column('last_x', sa.Float(), nullable=False),
     sa.Column('last_y', sa.Float(), nullable=False),
     sa.Column('last_event_id', sa.Integer(), nullable=False),

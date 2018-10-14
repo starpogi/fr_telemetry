@@ -1,15 +1,16 @@
 from flask import Blueprint, current_app
-from flask_sockets import Sockets
+
+from server import ws
+from server.tasks import process
 
 blueprint = Blueprint('stream', __name__)
 
-websocket = Sockets(current_app)
+
+@blueprint.route('/upstream')
+def upstream_data(socket):
+    while not socket.closed:
+        message = socket.receive()
+        process.push_event(message)
 
 
-@blueprint.route('/echo')
-def echo_socket(ws):
-    while not ws.closed:
-        message = ws.receive()
-        ws.send(message)
-
-websocket.register_blueprint(blueprint, url_prefix=r'/stream')
+ws.register_blueprint(blueprint, url_prefix=r'/')

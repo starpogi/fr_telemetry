@@ -1,5 +1,8 @@
 from flask import Blueprint, jsonify, request
+
 from server import ma
+from server.controllers import location
+
 
 blueprint = Blueprint('api', __name__, url_prefix='/api')
 
@@ -19,4 +22,11 @@ def get_robot(robot=None):
 @blueprint.route("/robots/<string:robot>/odometer", methods=('GET',))
 def get_odometer(robot=None):
     params = request.args
-    return jsonify(params)
+
+    odometer = location.get_odometer(
+        robots=robot,
+        start_time=params.get('start_time'),
+        end_time=params.get('end_time')
+    )
+
+    return jsonify(odometer)

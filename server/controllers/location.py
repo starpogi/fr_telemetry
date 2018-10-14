@@ -1,6 +1,9 @@
+import collections
 import math
+from sqlalchemy import desc, asc
 
 from server.models.events import LocationEvent
+from server.models.robots import Robot
 from server import db
 
 
@@ -15,11 +18,11 @@ def get_events(robots=None, start_time=None, end_time=None):
         if robots is not None:
             raise TypeError("Robots should be a string, list, or tuple.")
 
-    if start_time is not None and not isinstance(start_time, int):
-        raise TypeError("Start Time should an integer.")
+    if start_time is not None:
+        start_time = int(start_time)
 
-    if end_time is not None and not isinstance(end_time, int):
-        raise TypeError("Start Time should an integer.")
+    if end_time is not None:
+        end_time = int(end_time)
 
     if start_time is not None and start_time < 0:
         raise ValueError("Start Time should be positive.")
@@ -40,15 +43,24 @@ def get_events(robots=None, start_time=None, end_time=None):
         filter.append(start_time <= LocationEvent.timestamp)
 
     events = LocationEvent.query.filter(*filter)
+    events = events.order_by(desc(LocationEvent.robot))
+    events = events.order_by(asc(LocationEvent.timestamp))
+
     return events
 
 
-def get_odometer(robots=None, start_time=None, end_time=None):
-    events = get_events(robots, start_time, end_time)
+def get_odometer(robot_name, start_time=None, end_time=None):
+    events = get_events(robot_name, start_time, end_time)
     odometer = 0.0
 
     if events.count() == 0:
-        return 0.0
+        return odometer
+
+    if start_time is None and end_time is None:
+        robot = Robot.query.get(robot_name)
+
+        if robot is not None:
+            return float(robot.odometer)
 
     for i in range(events.count() - 1):
         coord_1 = events[i]
@@ -59,7 +71,7 @@ def get_odometer(robots=None, start_time=None, end_time=None):
     return odometer
 
 
-def add_event(robot, x, y, timestamp):
+def add_event(robot_name, x, y, timestamp):
     if timestamp < 0:
         raise ValueError("Timestamp should be positive.")
 
@@ -72,10 +84,11 @@ def add_event(robot, x, y, timestamp):
     if not isinstance(y, (int, float)):
         raise TypeError("y-coordinate should be an integer or float.")
 
-    if not isinstance(robot, str):
+    if not isinstance(robot_name, str):
         raise TypeError("Robot name should be a string.")
 
-    location_event = LocationEvent(robot=robot, x=x, y=y, timestamp=timestamp)
+    location_event = LocationEvent(robot=robot_name, x=x, y=y,
+                                   timestamp=timestamp)
     db.session.add(location_event)
     db.session.commit()
 

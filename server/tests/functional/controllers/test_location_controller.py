@@ -6,7 +6,6 @@ from server.models.events import LocationEvent
 
 def test_odometer_no_event(test_client, test_db):
     assert location.get_events().count() == 0
-    assert location.get_odometer() == 0
 
 
 def test_odometer_single_event(test_client, test_db):
@@ -18,7 +17,7 @@ def test_odometer_single_event(test_client, test_db):
     test_db.session.commit()
 
     assert location.get_events().count() == 1
-    assert location.get_odometer() == 0
+    assert location.get_odometer("Bender") == 0
 
 
 def test_odometer_two_events(test_client, test_db):
@@ -31,7 +30,7 @@ def test_odometer_two_events(test_client, test_db):
     test_db.session.commit()
 
     assert location.get_events().count() == 2
-    assert location.get_odometer() == 1
+    assert location.get_odometer("Bender") == 1
 
 
 def test_odometer_three_events(test_client, test_db):
@@ -45,7 +44,7 @@ def test_odometer_three_events(test_client, test_db):
     test_db.session.commit()
 
     assert location.get_events().count() == 3
-    assert location.get_odometer() == 2
+    assert location.get_odometer("Bender") == 2
 
 
 def test_event_filter(test_client, test_db):
@@ -68,11 +67,11 @@ def test_event_filter(test_client, test_db):
     assert location.get_events(end_time=5).count() == 4
     assert location.get_events(end_time=2).count() == 2
 
-    with pytest.raises(TypeError):
-        location.get_events(end_time="2").count()
+    with pytest.raises(ValueError):
+        location.get_events(end_time="2a").count()
 
-    with pytest.raises(TypeError):
-        location.get_events(start_time="2").count()
+    with pytest.raises(ValueError):
+        location.get_events(start_time="2b").count()
 
     with pytest.raises(ValueError):
         location.get_events(end_time=-2).count()
@@ -80,14 +79,8 @@ def test_event_filter(test_client, test_db):
     with pytest.raises(ValueError):
         location.get_events(start_time=-20).count()
 
-    with pytest.raises(TypeError):
-        location.get_events(end_time=2.34).count()
-
-    with pytest.raises(TypeError):
-        location.get_events(start_time=2.34).count()
-
-    with pytest.raises(TypeError):
-        location.get_events(end_time="2").count()
+    with pytest.raises(ValueError):
+        location.get_events(end_time="2c").count()
 
 
 def test_event_filter_multiple_robots(test_client, test_db):
@@ -126,23 +119,23 @@ def test_event_filter_multiple_robots(test_client, test_db):
 
 
 def test_add_event(test_client, test_db):
-    location.add_event(robot="Bender", x=1, y=2, timestamp=0)
+    location.add_event(robot_name="Bender", x=1, y=2, timestamp=0)
     assert location.get_events().count() == 1
 
     with pytest.raises(TypeError):
-        location.add_event(robot=1, x=1, y=2, timestamp=0)
+        location.add_event(robot_name=1, x=1, y=2, timestamp=0)
 
     with pytest.raises(TypeError):
-        location.add_event(robot="Bender", x=1, y=2, timestamp=1.5)
+        location.add_event(robot_name="Bender", x=1, y=2, timestamp=1.5)
 
     with pytest.raises(TypeError):
-        location.add_event(robot="Bender", x="1", y=2, timestamp=0)
+        location.add_event(robot_name="Bender", x="1", y=2, timestamp=0)
 
     with pytest.raises(TypeError):
-        location.add_event(robot="Bender", x=1, y="2", timestamp=0)
+        location.add_event(robot_name="Bender", x=1, y="2", timestamp=0)
 
     with pytest.raises(TypeError):
-        location.add_event(robot="Bender", x=1, y=2, timestamp="0")
+        location.add_event(robot_name="Bender", x=1, y=2, timestamp="0")
 
     with pytest.raises(ValueError):
-        location.add_event(robot="Bender", x=1, y=2, timestamp=-10)
+        location.add_event(robot_name="Bender", x=1, y=2, timestamp=-10)
