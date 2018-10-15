@@ -1,6 +1,7 @@
 Telemetry Server
-by Javier Onglao
 ------------------------------
+by Javier Onglao
+
 [![Build Status](https://circleci.com/gh/starpogi/fr_telemetry.svg?style=svg)](https://circleci.com/gh/starpogi/fr_telemetry)
 
 
