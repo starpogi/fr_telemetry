@@ -78,6 +78,10 @@ $ pytest
 ### Production
 You will need to run `celery` in the background either by using `&` at the end, or opening a new terminal, or using a process-management system like `circus` or `systemd`.
 
+The `-w` option for Gunicon indicates how many workers to launch. Launching more workers allows the server to be more available to receive WebSocket requests, but it may take a toll on the CPU. It is recommended that the `--autoscale` option for Celery be adopted to match the number of workers launched for Gunicorn.
+
+For instance, if `-w` is 10, it is recommended to do `--autoscale=10,5` where `10` is the max number of workers to autoscale, and `5` is the minimum number of workers to scale to.
+
 ```
 $ . setup.sh env prod
 $ gunicorn -w 4 -k flask_sockets.worker wsgi:app &
