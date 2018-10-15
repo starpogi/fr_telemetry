@@ -21,8 +21,35 @@ cannot possibly have 2 events at the same millisecond.
 
 ## Requirements
 - Python 3.6 (this is important if you want celery to work correctly)
-- MySQL 8
-- Redis 4
+
+  On OSX, you will need Brew. If you don't have Brew, you can run this
+
+  ```
+  $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  ```
+
+  and then run the following commands to get the correct version of Python
+
+  ```
+  $ brew install python
+  $ brew unlink python
+  $ brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/e128fa1bce3377de32cbf11bd8e46f7334dfd7a6/Formula/python.rb
+  $ brew switch python 3.6.5
+  ```
+
+- MySQL 8.0.12
+
+  On OSX, you can run this to install MySQL
+  ```
+  brew install mysql
+  ```
+
+- Redis 4.0.11
+
+  On OSX, you can run this to install Redis
+  ```
+  brew install redis
+  ```
 
 
 ## Setup
