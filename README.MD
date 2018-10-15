@@ -98,3 +98,12 @@ x,y,timestamp,robot_name
 ```
 
 A single event should use a single `send` command.
+
+
+## TODOs
+
+- Security for WebSockets
+- Error Handling of HTTP Errors as a JSON
+- Deferred Database Commits of Stream, so we can have majority of the data in
+the Redis cache, but this will increase the risk of data loss during outages
+(unrecoverable at this point)

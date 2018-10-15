@@ -10,7 +10,7 @@ blueprint = Blueprint('stream', __name__)
 def upstream_data(socket):
     while not socket.closed:
         message = socket.receive()
-        process.push_event(message)
+        process.push_event(message, socket)
 
 
 ws.register_blueprint(blueprint, url_prefix=r'/')
