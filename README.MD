@@ -41,14 +41,16 @@ cannot possibly have 2 events at the same millisecond.
 
   On OSX, you can run this to install MySQL
   ```
-  brew install mysql
+  $ brew install mysql
+  $ brew services start mysql
   ```
 
 - Redis 4.0.11
 
   On OSX, you can run this to install Redis
   ```
-  brew install redis
+  $ brew install redis
+  $ brew services start redis
   ```
 
 
