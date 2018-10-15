@@ -6,7 +6,6 @@ from flask_alembic import Alembic
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_sockets import Sockets
-from flask_redis import FlaskRedis
 
 from server.tools import data_generator
 
